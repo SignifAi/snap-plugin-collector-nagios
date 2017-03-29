@@ -1,10 +1,8 @@
 package main
 
 import (
-	"./nagios"
 	"fmt"
-	//	"io"
-	//	"os"
+	"github.com/signifai/snap-plugin-collector-nagios/nagios"
 )
 
 func main() {
