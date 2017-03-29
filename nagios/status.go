@@ -37,10 +37,7 @@ func NagiosStatusMaps(filename string) (hoststatuses NagiosHostStatus, servicest
 	for statusFileScanner.Scan() {
 		this_line := statusFileScanner.Text()
 
-		switch {
-		case strings.HasPrefix(this_line, NS_INFO), strings.HasPrefix(this_line, "#"):
-			continue
-		case strings.HasPrefix(this_line, NS_SERVICESTATUS), strings.HasPrefix(this_line, NS_HOSTSTATUS):
+		if strings.HasPrefix(this_line, NS_SERVICESTATUS) || strings.HasPrefix(this_line, NS_HOSTSTATUS) {
 			thisNagiosStruct, err := scanNagiosStruct(statusFileScanner)
 			if err == nil {
 				if strings.HasPrefix(this_line, NS_SERVICESTATUS) {
