@@ -1,15 +1,10 @@
 package nagios
 
 import (
-	/*	"encoding/json" */
-	//"fmt"
-	/*
-		"io"
-		"os" */
 	"errors"
+	"github.com/intelsdi-x/snap-plugin-lib-go/v1/plugin"
 	"os"
 	"time"
-	"github.com/intelsdi-x/snap-plugin-lib-go/v1/plugin"
 )
 
 const (
@@ -97,18 +92,18 @@ func HostStatusToMetric(hostname string, valueOf string, status map[string]strin
 		metricValue = status["problem_has_been_acknowledged"]
 		if metricValue.(string) == "0" {
 			metricValue = false
-		} else  {
+		} else {
 			metricValue = true
 		}
 	}
 
-	metricName := plugin.NewNamespace("nagios").AddDynamicElement("hostname", "The hostname for the service").AddStaticElement(valueOf)	
+	metricName := plugin.NewNamespace("nagios").AddDynamicElement("hostname", "The hostname for the service").AddStaticElement(valueOf)
 	metricName[1].Value = hostname
 	return plugin.Metric{
 		Namespace: metricName,
-		Data: metricValue,
+		Data:      metricValue,
 		Timestamp: time.Now(),
-		Version: Version,
+		Version:   Version,
 	}, nil
 }
 
@@ -138,9 +133,9 @@ func HostServiceStatusToMetric(hostname string, service string, valueOf string, 
 	metricName[3].Value = service
 	return plugin.Metric{
 		Namespace: metricName,
-		Data: metricValue,
+		Data:      metricValue,
 		Timestamp: time.Now(),
-		Version: Version,
+		Version:   Version,
 	}, nil
 }
 
@@ -208,7 +203,7 @@ func (nagios NagiosPlugin) CollectMetrics(metrics []plugin.Metric) (returnedMetr
 					}
 				} else {
 					// TODO: Make more efficient? It's just funny I'm doing the same thing
-					// both times, but one's in an iteration and the other is a one-off. 
+					// both times, but one's in an iteration and the other is a one-off.
 					if hostname == "*" {
 						for _hostname, hostMetrics := range hoststatuses {
 							newMetric, err := HostStatusToMetric(_hostname, valueOf, hostMetrics)
@@ -229,7 +224,7 @@ func (nagios NagiosPlugin) CollectMetrics(metrics []plugin.Metric) (returnedMetr
 				err = errors.New("Missing valueOf for host [" + hostname + "], service [" + serviceName + "]")
 				break
 			}
-		} 
+		}
 	}
 	return returnedMetrics, err
 }

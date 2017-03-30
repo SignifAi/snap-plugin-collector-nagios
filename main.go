@@ -1,6 +1,6 @@
 package main
 
-import(
+import (
 	"github.com/intelsdi-x/snap-plugin-lib-go/v1/plugin"
 	"github.com/signifai/snap-plugin-collector-nagios/nagios"
 )
