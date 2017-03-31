@@ -8,14 +8,13 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"os"
-	"strconv"
+	"io"
 	"strings"
 )
 
-type nagiosServiceStatusSubmap map[string]uint64
+type nagiosServiceStatusSubmap map[string]map[string]string
 type NagiosServiceStatus map[string]nagiosServiceStatusSubmap
-type NagiosHostStatus map[string]uint64
+type NagiosHostStatus map[string]map[string]string
 
 // Nagios status file group types
 const (
@@ -24,14 +23,9 @@ const (
 	NS_SERVICESTATUS = "servicestatus"
 )
 
-func NagiosStatusMaps(filename string) (hoststatuses NagiosHostStatus, servicestatuses NagiosServiceStatus, err error) {
+func NagiosStatusMaps(statusFile io.Reader) (hoststatuses NagiosHostStatus, servicestatuses NagiosServiceStatus, err error) {
 	hoststatuses = make(NagiosHostStatus)
 	servicestatuses = make(NagiosServiceStatus)
-	statusFile, err := os.Open(filename)
-
-	if err != nil {
-		return nil, nil, err
-	}
 
 	statusFileScanner := bufio.NewScanner(statusFile)
 	for statusFileScanner.Scan() {
@@ -41,20 +35,12 @@ func NagiosStatusMaps(filename string) (hoststatuses NagiosHostStatus, servicest
 			thisNagiosStruct, err := scanNagiosStruct(statusFileScanner)
 			if err == nil {
 				if strings.HasPrefix(this_line, NS_SERVICESTATUS) {
-					considered_state := thisNagiosStruct["current_state"]
-					if thisNagiosStruct["state_type"] == "0" {
-						considered_state = thisNagiosStruct["last_hard_state"]
-					}
-					if servicestatuses[thisNagiosStruct["host_name"]] == nil {
+					if _, ok := servicestatuses[thisNagiosStruct["host_name"]]; !ok {
 						servicestatuses[thisNagiosStruct["host_name"]] = make(nagiosServiceStatusSubmap)
 					}
-					servicestatuses[thisNagiosStruct["host_name"]][thisNagiosStruct["service_description"]], err = strconv.ParseUint(considered_state, 10, 64)
+					servicestatuses[thisNagiosStruct["host_name"]][thisNagiosStruct["service_description"]] = thisNagiosStruct
 				} else {
-					considered_state := thisNagiosStruct["current_state"]
-					if thisNagiosStruct["state_type"] == "0" {
-						considered_state = thisNagiosStruct["last_hard_state"]
-					}
-					hoststatuses[thisNagiosStruct["host_name"]], err = strconv.ParseUint(considered_state, 10, 64)
+					hoststatuses[thisNagiosStruct["host_name"]] = thisNagiosStruct
 				}
 			} else {
 				fmt.Println("Error scanning struct:", err)

@@ -1,0 +1,21 @@
+---
+version: 1
+schedule:
+  type: "simple"
+  interval: "1s"
+  count: 5
+max-failures: 10
+workflow:
+  collect:
+    metrics:
+      /nagios/*/acknowledged: {}
+      /nagios/*/state: {}
+      /nagios/*/services/*/acknowledged: {}
+      /nagios/*/services/*/state: {}
+    config:
+      /nagios:
+        status_file:  /home/zcarlson/FakeNagios/var/status.dat
+    publish:
+      - plugin_name: file
+        config:
+          file: "/tmp/nagios-metrics.log"
