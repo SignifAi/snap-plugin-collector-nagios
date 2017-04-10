@@ -1,5 +1,6 @@
 # snap-plugin-collector-nagios
-Publishes snap metrics/events to SignifAI metrics service.
+Collects state metrics from your Nagios installation
+and presents them to the Snap system. 
 
 1. [Getting Started](#getting-started)
   * [System Requirements](#system-requirements)
@@ -66,7 +67,7 @@ Loaded Time: Sat, 18 Mar 2017 13:28:45 PDT
 ```
 
 #### Task File
-You need to create or update a task file to use the SignifAi publisher
+You need to create or update a task file to use the Nagios collector
 plugin. We have provided an example, __examples/tasks/nagios-status-task.yaml_ shown below. In
 our example, we utilize the psutil collector so we have some data to
 work with. There is one (1) configuration setting you can use.
@@ -74,6 +75,11 @@ work with. There is one (1) configuration setting you can use.
 Setting|Description|Required?|
 |-------|-----------|---------|
 |status_file|The Nagios status file to monitor states from|Yes|
+
+The status file is your Nagios installation's status.dat file, usually found in
+$NAGIOS_ROOT/var/status.dat . It is the same file the CGI scripts use to present
+host and service statuses. This is where we collect state metrics from for the
+whole Nagios installation. 
 
 
 ```
