@@ -8,6 +8,7 @@ jobs:
       - checkout
       - run:
           command: |
+            echo "---"
             echo "Fetching glide; note GOPATH is $GOPATH"
             curl http://glide.sh/get | /bin/bash
             echo "Building"
