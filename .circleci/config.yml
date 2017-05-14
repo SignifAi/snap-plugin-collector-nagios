@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    working_directory: /go/src/github.com/SignifAi/snap-plugin-collector-nagios
+    docker:
+      - image: circleci/golang:1.8.1
+    steps:
+      - checkout
+      - run:
+          command: |
+            echo "Fetching glide; note GOPATH is $GOPATH"
+            curl http://glide.sh/get | /bin/bash
+            echo "Building"
+            make
+            echo "Testing"
+            make test
