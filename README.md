@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/SignifAi/snap-plugin-collector-nagios.svg?style=svg)](https://circleci.com/gh/SignifAi/snap-plugin-collector-nagios)
+
 # snap-plugin-collector-nagios
 Collects state metrics from your Nagios installation
 and presents them to the Snap system. 
@@ -6,13 +8,9 @@ and presents them to the Snap system.
   * [System Requirements](#system-requirements)
   * [Installation](#installation)
   * [Configuration and Usage](#configuration-and-usage)
-2. [Documentation](#documentation)
-  * [Examples](#examples)
-  * [Roadmap](#roadmap)
-3. [Community Support](#community-support)
-4. [Contributing](#contributing)
-5. [License](#license-and-authors)
-6. [Acknowledgements](#acknowledgements)
+2. [Contributing](#contributing)
+3. [License](#license-and-authors)
+4. [Acknowledgements](#acknowledgements)
 
 ## Getting Started
 ### System Requirements 
@@ -49,22 +47,20 @@ build:
   ```make```
 
 testing:
-  ```make test```
-
+  `make test`
 ### Configuration and Usage
 * Set up the [Snap framework](https://github.com/intelsdi-x/snap/blob/master/README.md#getting-started)
 
 #### Load the Plugin
 Once the framework is up and running, you can load the plugin.
-``
-$ snaptel plugin load snap-plugin-collector-nagios
+
+`$ snaptel plugin load snap-plugin-collector-nagios
 Plugin loaded
 Name: nagios
 Version: 1
 Type: collector
 Signed: false
-Loaded Time: Sat, 18 Mar 2017 13:28:45 PDT
-```
+Loaded Time: Sat, 18 Mar 2017 13:28:45 PDT`
 
 #### Task File
 You need to create or update a task file to use the Nagios collector
@@ -82,8 +78,8 @@ host and service statuses. This is where we collect state metrics from for the
 whole Nagios installation. 
 
 
+
 ```
----
   version: 1
   schedule:
     type: "simple"
@@ -105,6 +101,7 @@ whole Nagios installation.
 ```
 
 Once the task file has been created, you can create and watch the task.
+
 ```
 $ snaptel task create -t examples/tasks/nagios-status-task.yaml
 Using task manifest to create task
@@ -118,13 +115,10 @@ ID                                       NAME
 STATE     ...
 72869b36-def6-47c4-9db2-822f93bb9d1f
 Task-72869b36-def6-47c4-9db2-822f93bb9d1f    Running   ...
+
 ```
 
-## Documentation
 
-### Roadmap
-
-## Community Support
 
 ## Contributing We love contributions!
 
@@ -135,3 +129,4 @@ Released under under the Apache 2.0 [License](LICENSE).
 
 ## Acknowledgements
 * Author: [@SignifAi](https://github.com/SignifAi/)
+* Info: www.signifai.io
