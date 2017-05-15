@@ -54,13 +54,15 @@ testing:
 #### Load the Plugin
 Once the framework is up and running, you can load the plugin.
 
-`$ snaptel plugin load snap-plugin-collector-nagios
+```
+$ snaptel plugin load snap-plugin-collector-nagios
 Plugin loaded
 Name: nagios
 Version: 1
 Type: collector
 Signed: false
-Loaded Time: Sat, 18 Mar 2017 13:28:45 PDT`
+Loaded Time: Sat, 18 Mar 2017 13:28:45 PDT
+```
 
 #### Task File
 You need to create or update a task file to use the Nagios collector
