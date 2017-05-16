@@ -1,5 +1,5 @@
 [![CircleCI](https://img.shields.io/circleci/project/github/RedSparr0w/node-csgo-parser.svg)](https://circleci.com/gh/SignifAi/snap-plugin-collector-nagios)
-[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)]()
+[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/SignifAi/snap-plugin-collector-nagios/blob/master/LICENSE)
 
 # snap-plugin-collector-nagios
 Collects state metrics from your Nagios installation by monitoring the Nagios status.dat file
