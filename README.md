@@ -1,8 +1,9 @@
-[![CircleCI](https://circleci.com/gh/SignifAi/snap-plugin-collector-nagios.svg?style=svg)](https://circleci.com/gh/SignifAi/snap-plugin-collector-nagios)
+[![CircleCI](https://img.shields.io/circleci/project/github/RedSparr0w/node-csgo-parser.svg)](https://circleci.com/gh/SignifAi/snap-plugin-collector-nagios)
+[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)]()
 
 # snap-plugin-collector-nagios
-Collects state metrics from your Nagios installation
-and presents them to the Snap system. 
+Collects state metrics from your Nagios installation by monitoring the Nagios status.dat file
+and presents them to the Snap system.
 
 1. [Getting Started](#getting-started)
   * [System Requirements](#system-requirements)
@@ -22,8 +23,8 @@ All OSs currently supported by snap:
 * Darwin/amd64
 
 ### Installation
-#### Download nagios collector plugin binary:
-You can get the pre-built binaries for your OS and architecture under the plugin's [release](https://github.com/SignifAi/snap-plugin-collector-nagios/releases) page.  For Snap, check [here](https://github.com/intelsdi-x/snap/releases).
+#### Download  Snap:
+For Snap, check [here](https://github.com/intelsdi-x/snap/releases).
 
 
 #### To build the plugin binary:
@@ -127,7 +128,7 @@ Task-72869b36-def6-47c4-9db2-822f93bb9d1f    Running   ...
 The most immediately helpful way you can benefit this plug-in is by cloning the repository, adding some further examples and submitting a pull request.
 
 ## License
-Released under under the Apache 2.0 [License](LICENSE).
+Released under the Apache 2.0 [License](LICENSE).
 
 ## Acknowledgements
 * Author: [@SignifAi](https://github.com/SignifAi/)
