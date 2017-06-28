@@ -15,7 +15,7 @@ limitations under the License.
 package main
 
 import (
-	"github.com/signifai/snap-plugin-lib-go/v1/plugin"
+	"github.com/intelsdi-x/snap-plugin-lib-go/v1/plugin"
 	"github.com/signifai/snap-plugin-collector-nagios/nagios"
         "google.golang.org/grpc"
 )

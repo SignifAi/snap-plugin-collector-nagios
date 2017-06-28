@@ -16,7 +16,7 @@ package nagios
 
 import (
 	"errors"
-	"github.com/signifai/snap-plugin-lib-go/v1/plugin"
+	"github.com/intelsdi-x/snap-plugin-lib-go/v1/plugin"
 	"os"
 	"time"
 )
