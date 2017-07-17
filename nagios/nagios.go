@@ -92,6 +92,7 @@ func (nagios NagiosPlugin) GetMetricTypes(pluginConfig plugin.Config) ([]plugin.
 
 func HostStatusToMetric(hostname string, valueOf string, status map[string]string) (plugin.Metric, error) {
 	var metricValue interface{}
+	var exists bool
 	switch valueOf {
 	case "state":
 		var stateVar string
@@ -101,7 +102,10 @@ func HostStatusToMetric(hostname string, valueOf string, status map[string]strin
 		} else {
 			stateVar = "current_state"
 		}
-		metricValue = HostStateCode2String[status[stateVar]]
+		metricValue, exists = HostStateCode2String[status[stateVar]]
+		if !exists {
+			metricValue = "UNKNOWN"
+		}
 	case "acknowledged":
 		metricValue = status["problem_has_been_acknowledged"]
 		if metricValue.(string) == "0" {
