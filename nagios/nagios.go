@@ -87,6 +87,23 @@ func (nagios NagiosPlugin) GetMetricTypes(pluginConfig plugin.Config) ([]plugin.
 		Unit:        "boolean",
 		Version:     Version,
 	})
+
+	// Host Plugin Long Output
+	metricDefinitions = append(metricDefinitions, plugin.Metric{
+		Description: "A host's check's long plugin output",
+		Namespace:   plugin.NewNamespace("nagios").AddDynamicElement("hostname", "The hostname for the service").AddStaticElement("long_plugin_output"),
+		Unit:        "string",
+		Version:     Version,
+	})
+
+	// Service Plugin Long Output
+	metricDefinitions = append(metricDefinitions, plugin.Metric{
+		Description: "A service's check's long plugin output",
+		Namespace:   plugin.NewNamespace("nagios").AddDynamicElement("hostname", "The hostname for the service").AddStaticElement("services").AddDynamicElement("service_name", "The service's name").AddStaticElement("long_plugin_output"),
+		Unit:        "string",
+		Version:     Version,
+	})
+
 	return metricDefinitions, nil
 }
 
@@ -113,6 +130,8 @@ func HostStatusToMetric(hostname string, valueOf string, status map[string]strin
 		} else {
 			metricValue = true
 		}
+	case "long_plugin_output":
+		metricValue = status["long_plugin_output"]
 	}
 
 	metricName := plugin.NewNamespace("nagios").AddDynamicElement("hostname", "The hostname for the service").AddStaticElement(valueOf)
@@ -148,6 +167,8 @@ func HostServiceStatusToMetric(hostname string, service string, valueOf string, 
 		} else {
 			metricValue = true
 		}
+	case "long_plugin_output":
+		metricValue = status["long_plugin_output"]
 	}
 
 	metricName := plugin.NewNamespace("nagios").AddDynamicElement("hostname", "The hostname for the service").AddStaticElement("services").AddDynamicElement("service_name", "The service's name").AddStaticElement(valueOf)
@@ -167,7 +188,7 @@ func (nagios NagiosPlugin) CollectMetrics(metrics []plugin.Metric) (returnedMetr
 	hoststatuses, servicestatuses, err := NagiosStatusMaps(statusFile)
 	if err == nil {
 		for _, metric := range metrics {
-			var hostname, serviceName, valueOf string
+			var hostname, serviceName, statevalueOf string
 			var isService bool = false
 			for _, namePart := range metric.Namespace {
 				if namePart.IsDynamic() {
@@ -184,6 +205,8 @@ func (nagios NagiosPlugin) CollectMetrics(metrics []plugin.Metric) (returnedMetr
 						valueOf = "acknowledged"
 					case "state":
 						valueOf = "state"
+					case "long_plugin_output":
+						valueOf = "long_plugin_output"
 					}
 				}
 			}
