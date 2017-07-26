@@ -188,7 +188,7 @@ func (nagios NagiosPlugin) CollectMetrics(metrics []plugin.Metric) (returnedMetr
 	hoststatuses, servicestatuses, err := NagiosStatusMaps(statusFile)
 	if err == nil {
 		for _, metric := range metrics {
-			var hostname, serviceName, state, valueOf string
+			var hostname, serviceName, valueOf string
 			var isService bool = false
 			for _, namePart := range metric.Namespace {
 				if namePart.IsDynamic() {
