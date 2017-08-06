@@ -109,16 +109,19 @@ func (nagios NagiosPlugin) GetMetricTypes(pluginConfig plugin.Config) ([]plugin.
 
 func HostStatusToMetric(hostname string, valueOf string, status map[string]string) (plugin.Metric, error) {
 	var metricValue interface{}
+	var stateVar string
+	var tags map[string]string
+
+	if status["state_type"] == "0" {
+		// Soft -- use last_hard_state to avoid flapping too much...
+		stateVar = "last_hard_state"
+	} else {
+		stateVar = "current_state"
+	}
+
 	var exists bool
 	switch valueOf {
 	case "state":
-		var stateVar string
-		if status["state_type"] == "0" {
-			// Soft -- use last_hard_state to avoid flapping too much...
-			stateVar = "last_hard_state"
-		} else {
-			stateVar = "current_state"
-		}
 		metricValue, exists = HostStateCode2String[status[stateVar]]
 		if !exists {
 			metricValue = "UNKNOWN"
@@ -132,6 +135,11 @@ func HostStatusToMetric(hostname string, valueOf string, status map[string]strin
 		}
 	case "long_plugin_output":
 		metricValue = status["long_plugin_output"]
+		tags = make(map[string]string)
+		tags["service_state"], exists = ServiceStateCode2String[status[stateVar]]
+		if !exists {
+			tags["service_state"] = "UNKNOWN"
+		}
 	}
 
 	metricName := plugin.NewNamespace("nagios").AddDynamicElement("hostname", "The hostname for the service").AddStaticElement(valueOf)
@@ -141,21 +149,25 @@ func HostStatusToMetric(hostname string, valueOf string, status map[string]strin
 		Data:      metricValue,
 		Timestamp: time.Now(),
 		Version:   Version,
+		Tags:      tags,
 	}, nil
 }
 
 func HostServiceStatusToMetric(hostname string, service string, valueOf string, status map[string]string) (plugin.Metric, error) {
 	var metricValue interface{}
+	var stateVar string
+	var tags map[string]string
+
+	if status["state_type"] == "0" {
+		// Soft -- use last_hard_state to avoid flapping too much...
+		stateVar = "last_hard_state"
+	} else {
+		stateVar = "current_state"
+	}
+
         var exists bool
 	switch valueOf {
 	case "state":
-		var stateVar string
-		if status["state_type"] == "0" {
-			// Soft -- use last_hard_state to avoid flapping too much...
-			stateVar = "last_hard_state"
-		} else {
-			stateVar = "current_state"
-		}
 		metricValue, exists = ServiceStateCode2String[status[stateVar]]
                 if !exists {
 			metricValue = "UNKNOWN"
@@ -169,6 +181,11 @@ func HostServiceStatusToMetric(hostname string, service string, valueOf string, 
 		}
 	case "long_plugin_output":
 		metricValue = status["long_plugin_output"]
+		tags = make(map[string]string)
+		tags["service_state"], exists = ServiceStateCode2String[status[stateVar]]
+		if !exists {
+			tags["service_state"] = "UNKNOWN"
+		}
 	}
 
 	metricName := plugin.NewNamespace("nagios").AddDynamicElement("hostname", "The hostname for the service").AddStaticElement("services").AddDynamicElement("service_name", "The service's name").AddStaticElement(valueOf)
@@ -179,6 +196,7 @@ func HostServiceStatusToMetric(hostname string, service string, valueOf string, 
 		Data:      metricValue,
 		Timestamp: time.Now(),
 		Version:   Version,
+		Tags:      tags,
 	}, nil
 }
 
